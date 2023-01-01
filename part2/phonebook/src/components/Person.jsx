@@ -8,3 +8,9 @@ const Person = ({ name, number, deletePerson, id }) => {
 };
 
 export default Person;
+
+
+
+
+
+// 040-123456
