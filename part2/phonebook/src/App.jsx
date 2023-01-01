@@ -11,7 +11,7 @@ const App = () => {
 	const [newName, setNewName] = useState("");
 	const [newNumber, setNewNumber] = useState("");
 	const [searchTerm, setSearchTerm] = useState("");
-	const [message, setMessage] = useState(null)
+	const [message, setMessage] = useState({ message:null, error: false});
 
 	// Data fetching
 	useEffect(() => {
@@ -24,6 +24,7 @@ const App = () => {
 		person.name.toLowerCase().includes(searchTerm)
 	);
 
+	// ======================= ADD PERSON FUNCTION ==========================
 	const addPersons = (event) => {
 		event.preventDefault();
 
@@ -57,7 +58,7 @@ const App = () => {
 			window.confirm(
 				`${newName} is already added to phonebook, replace the old number with a new one?`
 			) &&
-				// update number function
+				// ======================= UPDATE NUMBER FUNCTION ==========================
 				personService
 					.update(updatedPerson.id, updatedPerson)
 					.then((returnedPerson) => {
@@ -69,17 +70,27 @@ const App = () => {
 
 						setNewName("");
 						setNewNumber("");
-						setMessage(
-							`Replaced ${existingPersonName.number} with ${returnedPerson.number}`
+						setMessage({
+							message: `Replaced ${existingPersonName.number} with ${returnedPerson.number}`,
+						}
 						);
 						setTimeout(() => {
-							setMessage(null);
+							setMessage({ message:null, error: false});
 						}, 5000);
 					})
-					.catch((error) => {
-						alert(error);
+					.catch(() => {
+						// alert(error);
+						setMessage({
+							message: `Information of ${existingPersonName.name} has already been removed from server`,
+							error: true
+						});
+						setTimeout(() => {
+							setMessage({ message: null, error: false });
+						}, 5000);
 						setPersons(persons.filter((p) => p.id !== existingPersonName.id));
 					});
+			// ======================= END OF UPDATE NUMBER FUNCTION ==========================
+
 		} else if (
 			existingPersonNumber &&
 			existingPersonNumber.name !== newPersons.name &&
@@ -90,7 +101,7 @@ const App = () => {
 				`${newNumber} is already added to phonebook, replace the old name with a new one?`
 			);
 
-			// Update name function
+			// ======================= UPDATE NAME FUNCTION ==========================
 			personService
 				.update(updatedPerson.id, updatedPerson)
 				.then((returnedPerson) => {
@@ -102,16 +113,24 @@ const App = () => {
 					setNewName("");
 					setNewNumber("");
 					setMessage(
-						`Replaced ${existingPersonNumber.name} with ${returnedPerson.name}`
+						{ message: `Replaced ${existingPersonNumber.name} with ${returnedPerson.name}` }
 					);
 					setTimeout(() => {
-						setMessage(null);
+						setMessage({ message: null, error: false });
 					}, 5000);
 				})
-				.catch((error) => {
-					alert(error);
-					setPersons(persons.filter((p) => p.id !== existingPersonName.id));
+				.catch(() => {
+					// alert(error);
+					setMessage({
+						message: `Information of ${existingPersonNumber.name} has already been removed from server`,
+						error: true,
+					});
+					setTimeout(() => {
+						setMessage({ message: null, error: false });
+					}, 5000);
+					setPersons(persons.filter((p) => p.id !== existingPersonNumber.id));
 				});
+			// ======================= END OF UPDATE NAME FUNCTION ==========================
 		} else if (newName.trim() === "" && newNumber.trim() === "") {
 			alert("The name and number field can not be empty");
 		} else if (newName.trim() === "") {
@@ -125,9 +144,9 @@ const App = () => {
 					setPersons(persons.concat(returnedPersons));
 					setNewName("");
 					setNewNumber("");
-					setMessage(`Added ${newPersons.name}`);
+					setMessage({ message: `Added ${newPersons.name} successfully` });
 					setTimeout(() => {
-						setMessage(null);
+						setMessage({ message: null, error: false });
 					}, 5000);
 				})
 				.catch((error) => {
@@ -136,6 +155,7 @@ const App = () => {
 		}
 	};
 
+	// ============== DELETE PERSON ====================
 	const deletePerson = (id, name) => {
 		window.confirm(`Delete ${name}`) &&
 			personService
@@ -144,9 +164,9 @@ const App = () => {
 					setPersons(persons.filter((n) => n.id !== returnedPersons.id));
 					setNewName("");
 					setNewNumber("");
-					setMessage(`Deleted ${name}`)
+					setMessage({ message: `Deleted ${name} successfully` });
 					setTimeout(() => {
-						setMessage(null)
+						setMessage({ message: null, error: false });
 					}, 5000);
 				})
 				.catch((error) => {
@@ -168,7 +188,7 @@ const App = () => {
 	return (
 		<div>
 			<h2>Phonebook</h2>
-			<Notification message={message}/>
+			<Notification message={message.message} error={message.error} />
 			<Filter type="text" value={searchTerm} onChange={handleSearchChange} />
 
 			<PersonForm
