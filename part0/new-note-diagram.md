@@ -7,12 +7,17 @@
     browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/notes
     activate server
 
+    server-->>browser: HTML, CSS, JS File
+    deactivate server
+
+    Note right of browser: The browser starts executing the JavaScript code that fetches the JSON from the server
+
     user->>browser: Write something into the text field and click save button
     activate server
 
-
     browser->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_notes
     activate server
+    
     Note left of server: The server receive the note and writes the new note into the server database
 
     server-->>browser: Respond with Notes with the new note added
@@ -21,6 +26,6 @@
      Note left of server: The server responds with all the list of notes include the new note
 
      browser->>user: Display new notes to user
-    
+
 
 ```
