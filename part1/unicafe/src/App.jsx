@@ -1,25 +1,32 @@
 import { useState } from 'react'
 
 const Statistics = (props) => {
-
-  return (
-    props.total ?
+  return props.total ? (
 		<div>
-      <h1>statistics</h1>
-			<p> good {props.good}</p>
-			<p> neutral {props.neutral}</p>
-			<p> bad {props.bad}</p>
-			<p> all {props.total}</p>
-			<p> average {props.average}</p>
-      <p> positive {props.percentage}%</p>
-    </div>
-      :
-    <div>
-        <h1>statistics</h1>
-        <p>No feedback given</p>
-    </div>
+			<h1>statistics</h1>
+			<StatisticLine text="good" value={props.good} />
+			<StatisticLine text="neutral" value={props.neutral} />
+			<StatisticLine text="bad" value={props.bad} />
+			<StatisticLine text="all" value={props.total} />
+			<StatisticLine text="average" value={props.average} />
+			<StatisticLine text="positive" value={props.percentage} />
+		</div>
+	) : (
+		<div>
+			<h1>statistics</h1>
+			<p>No feedback given</p>
+		</div>
 	);
 }
+
+const StatisticLine = (props) => {
+  return (
+		<p>
+			{props.text} {props.value}{" "}
+		</p>
+	);
+}
+
 const Button = ({ onClick, text }) => {
   return (
     <button onClick={onClick}>{text}</button>
@@ -33,7 +40,7 @@ function App() {
 
   const total = good + neutral + bad
   const average = total && (good - bad) / total
-  const percentage = total && (good / total) * 100;
+  const percentage = `${total && (good / total) * 100}%`;
 
 const handleGoodClick = () => {
 	const updatedGood = good + 1;
