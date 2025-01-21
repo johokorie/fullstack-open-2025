@@ -2,15 +2,19 @@ import { useState } from 'react'
 
 const Statistics = (props) => {
   return props.total ? (
-		<div>
-			<h1>statistics</h1>
-			<StatisticLine text="good" value={props.good} />
-			<StatisticLine text="neutral" value={props.neutral} />
-			<StatisticLine text="bad" value={props.bad} />
-			<StatisticLine text="all" value={props.total} />
-			<StatisticLine text="average" value={props.average} />
-			<StatisticLine text="positive" value={props.percentage} />
-		</div>
+    <>
+      <h1>statistics</h1>
+      <table>
+        <tbody>
+          <StatisticLine text="good" value={props.good} />
+          <StatisticLine text="neutral" value={props.neutral} />
+          <StatisticLine text="bad" value={props.bad} />
+          <StatisticLine text="all" value={props.total} />
+          <StatisticLine text="average" value={props.average} />
+          <StatisticLine text="positive" value={props.percentage} />
+        </tbody>
+      </table>
+    </>
 	) : (
 		<div>
 			<h1>statistics</h1>
@@ -21,9 +25,15 @@ const Statistics = (props) => {
 
 const StatisticLine = (props) => {
   return (
-		<p>
-			{props.text} {props.value}{" "}
-		</p>
+      <tr>
+        <td>{props.text} </td>
+        <td>{props.value}</td>
+      </tr>
+
+
+		// <p>
+		// 	{props.text} {props.value}{" "}
+		// </p>
 	);
 }
 
