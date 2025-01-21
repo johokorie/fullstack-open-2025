@@ -2,7 +2,7 @@ import { useState } from 'react'
 
 const Statistics = (props) => {
   return props.total ? (
-    <>
+    <div>
       <h1>statistics</h1>
       <table>
         <tbody>
@@ -14,7 +14,7 @@ const Statistics = (props) => {
           <StatisticLine text="positive" value={props.percentage} />
         </tbody>
       </table>
-    </>
+    </div>
 	) : (
 		<div>
 			<h1>statistics</h1>
@@ -29,11 +29,6 @@ const StatisticLine = (props) => {
         <td>{props.text} </td>
         <td>{props.value}</td>
       </tr>
-
-
-		// <p>
-		// 	{props.text} {props.value}{" "}
-		// </p>
 	);
 }
 
@@ -52,18 +47,19 @@ function App() {
   const average = total && (good - bad) / total
   const percentage = `${total && (good / total) * 100}%`;
 
-const handleGoodClick = () => {
-	const updatedGood = good + 1;
-  setGood(updatedGood);
-};
+
+  const handleGoodClick = () => {
+      const updatedGood = good + 1;
+      setGood(updatedGood);
+    };
   const handleNeutralClick = () => {
-    const updatedNeutral = neutral + 1
-    setNeutral(updatedNeutral)
-};
+      const updatedNeutral = neutral + 1
+      setNeutral(updatedNeutral)
+    };
   const handleBadClick = () => {
-    const updatedBad = bad + 1
-    setBad(updatedBad)
-  };
+      const updatedBad = bad + 1
+      setBad(updatedBad)
+    };
 
   return (
     <div>
