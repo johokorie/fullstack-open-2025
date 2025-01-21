@@ -1,16 +1,23 @@
 import { useState } from 'react'
 
 const Statistics = (props) => {
+
   return (
+    props.total ?
 		<div>
-			<h1>statistics</h1>
+      <h1>statistics</h1>
 			<p> good {props.good}</p>
 			<p> neutral {props.neutral}</p>
 			<p> bad {props.bad}</p>
 			<p> all {props.total}</p>
 			<p> average {props.average}</p>
-			<p> positive {props.percentage}%</p>
-		</div>
+      <p> positive {props.percentage}%</p>
+    </div>
+      :
+    <div>
+        <h1>statistics</h1>
+        <p>No feedback given</p>
+    </div>
 	);
 }
 const Button = ({ onClick, text }) => {
