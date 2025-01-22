@@ -1,34 +1,4 @@
-const Course = (props) => {
-  return (
-    <div>
-      <Header name={props.course.name} />
-      <Content course={props.course} />
-    </div>
-  );
-}
-
-const Header =(props)=> {
-  return (
-    <h1>{props.name}</h1>
-  )
-}
-const Content=(props)=>{
-  return (
-    <div>
-      <Part parts={props.course.parts[0].name} exercises={props.course.parts[0].exercises}/>
-      <Part parts={props.course.parts[1].name} exercises={props.course.parts[1].exercises}/>
-      <Part parts={props.course.parts[2].name} exercises={props.course.parts[2].exercises}/>
-    </div>
-  )
-}
-
-const Part=(props)=>{
-  return (
-    <div>
-      <p>{props.parts} {props.exercises}</p>
-    </div>
-  )
-}
+import Course from "./components/Course";
 
 const App = () => {
 	const course = {
@@ -49,6 +19,11 @@ const App = () => {
 				name: "State of a component",
 				exercises: 14,
 				id: 3,
+			},
+			{
+				name: "Redux",
+				exercises: 11,
+				id: 4,
 			},
 		],
 	};
