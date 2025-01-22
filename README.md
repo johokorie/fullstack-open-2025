@@ -18,7 +18,10 @@ Each part of the course is organized into its own directory, containing the corr
 ├── part7   # React Router and Webpack
 ├── part8   # GraphQL
 ├── part9   # TypeScript
-├── part10  # Additional Topics (e.g., CI/CD)
+├── part10  # React Native
+├── part11  # CI/CD
+├── part12  # Containers
+├── part13  # Relational Database
 ```
 
 Each directory contains:
