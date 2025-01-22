@@ -7,7 +7,7 @@ const Content = ({ parts }) => {
 				<Part key={part.id} parts={part.name} exercises={part.exercises} />
 			))}
 			<Total
-				exercises={parts}
+				parts={parts}
 			/>
 		</div>
 	);
