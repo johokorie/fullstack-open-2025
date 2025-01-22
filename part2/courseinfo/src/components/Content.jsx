@@ -1,10 +1,14 @@
 import Part from "./Part";
-const Content = ({ course }) => {
+import Total from "./Total";
+const Content = ({ parts }) => {
 	return (
 		<div>
-			{course.parts.map((part) => (
+			{parts.map((part) => (
 				<Part key={part.id} parts={part.name} exercises={part.exercises} />
 			))}
+			<Total
+				exercises={parts}
+			/>
 		</div>
 	);
 };
