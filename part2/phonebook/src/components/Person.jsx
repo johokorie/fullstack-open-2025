@@ -1,7 +1,7 @@
 
 const Person = ({person}) => {
   return (
-      <li>{person.name}</li>
+      <p>{person.name}</p>
   )
 }
 
