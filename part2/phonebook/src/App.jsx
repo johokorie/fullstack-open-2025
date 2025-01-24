@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import personService from "./services/person";
 import Persons from "./components/Persons";
 import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
@@ -11,11 +11,12 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('')
   const [searchTerm, setSearchTerm] = useState('');
 
-	// Data fetching
-	useEffect(() => {
-		axios.get("http://localhost:3001/persons")
-			.then((response) => { setPersons(response.data) })
-		},[])
+// Data fetching
+useEffect(() => {
+	personService
+		.getAllPerson()
+		.then((initialPersons) => { setPersons(initialPersons) })
+	},[])
 
 
 const filteredPersons = persons.filter((person) =>
@@ -24,37 +25,41 @@ const filteredPersons = persons.filter((person) =>
 
 
  const addPersons = (event) => {
-		event.preventDefault();
+	event.preventDefault();
 
-		const newPersons = {
-			name: newName,
-			number: newNumber,
-		};
+	const newPersons = {
+		name: newName,
+		number: newNumber,
+	};
 
-		const existingPerson = persons.find(
-			(person) =>
-				person.name === newPersons.name || person.number === newPersons.number
-		);
+	const existingPerson = persons.find(
+		(person) =>
+			person.name === newPersons.name || person.number === newPersons.number
+	);
 
-		//  Checks if both or any field is empty
-		const emptyField = () => newName.trim() === "" || newNumber.trim() === "";
-
-		if (existingPerson) {
-			alert(`${newName} ${newNumber} is already added to phonebook`);
-		} else if (emptyField) {
-			//  alerts if both or any field is empty
-			if (newName.trim() === "" && newNumber.trim() === "") {
+	//  Checks and alert if both or any field is empty else create a new person
+	if (existingPerson) {
+		alert(`${newName} ${newNumber} is already added to phonebook`);
+	} else if (newName.trim() === "" && newNumber.trim() === "") {
 				alert("The name and number field can not be empty");
-			} else if (newName.trim() === "") {
+	} else if (newName.trim() === "") {
 				alert("The name field can not be empty");
-			} else if (newNumber.trim() === "") {
+	} else if (newNumber.trim() === "") {
 				alert("The number field can not be empty");
-			}
-		} else {
-			setPersons(persons.concat(newPersons));
+	} else {
+
+		personService
+			.createPerson(newPersons)
+			.then((returnedPersons) => {
+			setPersons(persons.concat(returnedPersons));
 			setNewName("");
 			setNewNumber("");
-		}
+			})
+			.catch( (error) => {
+				alert(`${error.message}`)
+			})
+
+	}
  };
 
 
