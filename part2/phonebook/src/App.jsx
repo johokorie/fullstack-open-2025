@@ -47,7 +47,6 @@ const filteredPersons = persons.filter((person) =>
 	} else if (newNumber.trim() === "") {
 				alert("The number field can not be empty");
 	} else {
-
 		personService
 			.createPerson(newPersons)
 			.then((returnedPersons) => {
