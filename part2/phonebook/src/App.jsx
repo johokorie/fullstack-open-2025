@@ -11,20 +11,20 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('')
   const [searchTerm, setSearchTerm] = useState('');
 
-// Data fetching
-useEffect(() => {
+  // Data fetching
+  useEffect(() => {
 	personService
 		.getAllPerson()
 		.then((initialPersons) => { setPersons(initialPersons) })
 	},[])
 
 
-const filteredPersons = persons.filter((person) =>
+	const filteredPersons = persons.filter((person) =>
 		person.name.toLowerCase().includes(searchTerm)
- );
+	 );
 
 
- const addPersons = (event) => {
+ 	const addPersons = (event) => {
 	event.preventDefault();
 
 	const newPersons = {
@@ -59,7 +59,20 @@ const filteredPersons = persons.filter((person) =>
 			})
 
 	}
- };
+	  };
+
+	const deletePerson = (id, name) => {
+		window.confirm(`Delete ${name}`) &&
+		personService
+			.remove(id)
+			.then((returnedPersons) => {
+				setPersons(persons.filter(n => n.id !== returnedPersons.id ));
+			})
+			.catch((error) => {
+				alert(`${error.message}`);
+			});
+	}
+
 
 
   const handleNameChange = (event) => {
@@ -80,7 +93,7 @@ const filteredPersons = persons.filter((person) =>
 
 		  	<PersonForm addPersons={addPersons} newName={newName} handleNameChange={handleNameChange} handleNumberChange={handleNumberChange} newNumber={newNumber}  />
 
-			<Persons filteredPersons={filteredPersons} />
+			<Persons filteredPersons={filteredPersons} deletePerson={deletePerson} />
 		</div>
 	);
 }
