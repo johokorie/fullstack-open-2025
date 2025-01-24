@@ -23,25 +23,39 @@ const filteredPersons = persons.filter((person) =>
 
 
  const addPersons = (event) => {
-	 event.preventDefault()
+		event.preventDefault();
 
-	 const newPersons = {
-		name: newName,
-      	number: newNumber
-    }
+		const newPersons = {
+			name: newName,
+			number: newNumber,
+		};
 
-	 const existingPerson = persons.find((person) => (person.name === newPersons.name ||(person.number === newPersons.number)));
+		const existingPerson = persons.find(
+			(person) =>
+				person.name === newPersons.name || person.number === newPersons.number
+		);
 
+		//  Checks if both or any field is empty
+		const emptyField = () => newName.trim() === "" || newNumber.trim() === "";
 
-
-	 if (existingPerson) {
+		if (existingPerson) {
 			alert(`${newName} ${newNumber} is already added to phonebook`);
-		} else if (newName.trim() !== "" && newNumber.trim() !== "") {
+		} else if (emptyField) {
+			//  alerts if both or any field is empty
+			if (newName.trim() === "" && newNumber.trim() === "") {
+				alert("The name and number field can not be empty");
+			} else if (newName.trim() === "") {
+				alert("The name field can not be empty");
+			} else if (newNumber.trim() === "") {
+				alert("The number field can not be empty");
+			}
+			//  return emptyFieldAlert;
+		} else {
 			setPersons(persons.concat(newPersons));
 			setNewName("");
 			setNewNumber("");
 		}
-  }
+ };
 
 
   const handleNameChange = (event) => {
