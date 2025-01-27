@@ -3,12 +3,15 @@ import personService from "./services/person";
 import Persons from "./components/Persons";
 import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
+import "../index.css";
+import Notification from "./components/Notification";
 
 const App = () => {
 	const [persons, setPersons] = useState([]);
 	const [newName, setNewName] = useState("");
 	const [newNumber, setNewNumber] = useState("");
 	const [searchTerm, setSearchTerm] = useState("");
+	const [message, setMessage] = useState(null)
 
 	// Data fetching
 	useEffect(() => {
@@ -63,8 +66,15 @@ const App = () => {
 								person.id !== existingPersonName.id ? person : returnedPerson
 							)
 						);
+
 						setNewName("");
 						setNewNumber("");
+						setMessage(
+							`Replaced ${existingPersonName.number} with ${returnedPerson.number}`
+						);
+						setTimeout(() => {
+							setMessage(null);
+						}, 5000);
 					})
 					.catch((error) => {
 						alert(error);
@@ -91,6 +101,12 @@ const App = () => {
 					);
 					setNewName("");
 					setNewNumber("");
+					setMessage(
+						`Replaced ${existingPersonNumber.name} with ${returnedPerson.name}`
+					);
+					setTimeout(() => {
+						setMessage(null);
+					}, 5000);
 				})
 				.catch((error) => {
 					alert(error);
@@ -107,6 +123,12 @@ const App = () => {
 				.create(newPersons)
 				.then((returnedPersons) => {
 					setPersons(persons.concat(returnedPersons));
+					setNewName("");
+					setNewNumber("");
+					setMessage(`Added ${newPersons.name}`);
+					setTimeout(() => {
+						setMessage(null);
+					}, 5000);
 				})
 				.catch((error) => {
 					alert(`${error.message}`);
@@ -122,6 +144,10 @@ const App = () => {
 					setPersons(persons.filter((n) => n.id !== returnedPersons.id));
 					setNewName("");
 					setNewNumber("");
+					setMessage(`Deleted ${name}`)
+					setTimeout(() => {
+						setMessage(null)
+					}, 5000);
 				})
 				.catch((error) => {
 					alert(`${error.message}`);
@@ -142,6 +168,7 @@ const App = () => {
 	return (
 		<div>
 			<h2>Phonebook</h2>
+			<Notification message={message}/>
 			<Filter type="text" value={searchTerm} onChange={handleSearchChange} />
 
 			<PersonForm
