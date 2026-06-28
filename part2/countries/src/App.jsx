@@ -9,6 +9,7 @@ const App = () => {
   const [country, setCountry] = useState(null)
   const [filter, setFilter] = useState('')
   const [selectedCountry, setSelectedCountry] = useState(null)
+  const [weather, setWeather] = useState(null)
 
 
   // Fetch all country and begin filtering when a filter is specifiedn
@@ -34,11 +35,22 @@ const App = () => {
     if (country) {
       countryService.getCountry(country).then((countryData) => {
         setSelectedCountry(countryData)
-        console.log('Country selected:', countryData)
+        setWeather(null) // Reset weather data when a new country is selected
       }).catch((error) => console.log(`Error fetching country details: ${error.message}`))
     }
+
   }, [country])
 
+
+useEffect(() => {
+    if (selectedCountry) {
+      const lat = selectedCountry.latlng[0]
+      const lon = selectedCountry.latlng[1]
+      countryService.getWeather(lat, lon).then((weatherData) => {
+        setWeather(weatherData)
+      }).catch((error) => console.log(`Error fetching weather data: ${error.message}`))
+    }
+  }, [selectedCountry])
 
 
 
@@ -49,7 +61,7 @@ const App = () => {
   const handleCountryShow = (countryName) => {
     setFilter(countryName.toLowerCase())
     setCountry(countryName)
-    setCountries([{ name: { common: countryName } }]) // Set countries to an array containing only the selected country
+    setCountries([countryName]) // Set countries to an array containing only the selected country
   }
 
 
@@ -65,7 +77,7 @@ const App = () => {
           countries.length === 0 || filter.length === 0
             ? (<p>No match, Specify a filter to find a match</p>)
             : countries.length === 1
-              ? (<CountryDetails country={selectedCountry} />)
+              ? (<CountryDetails country={selectedCountry}  weather={weather}/>)
               : countries.length >= 10
                 ? (<p>Too many matches, specify another filter</p>)
                 : (<CountryList countries={countries} handleCountryShow={handleCountryShow} />)
