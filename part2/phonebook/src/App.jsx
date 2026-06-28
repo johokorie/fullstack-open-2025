@@ -11,7 +11,7 @@ const App = () => {
 	const [newName, setNewName] = useState("");
 	const [newNumber, setNewNumber] = useState("");
 	const [searchTerm, setSearchTerm] = useState("");
-	const [message, setMessage] = useState({ message:null, error: false});
+	const [message, setMessage] = useState({ message: null, error: false });
 
 	// Data fetching
 	useEffect(() => {
@@ -21,7 +21,7 @@ const App = () => {
 	}, []);
 
 	const filteredPersons = persons.filter((person) =>
-		person.name.toLowerCase().includes(searchTerm)
+		person.name.toLowerCase().includes(searchTerm) || person.number.includes(searchTerm)
 	);
 
 	// ======================= ADD PERSON FUNCTION ==========================
@@ -75,7 +75,7 @@ const App = () => {
 						}
 						);
 						setTimeout(() => {
-							setMessage({ message:null, error: false});
+							setMessage({ message: null, error: false });
 						}, 5000);
 					})
 					.catch(() => {
