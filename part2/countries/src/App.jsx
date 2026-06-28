@@ -46,6 +46,10 @@ const App = () => {
     setFilter(event.target.value.toLowerCase())
   }
 
+  const handleCountryShow = (countryName) => {
+    setFilter(countryName.toLowerCase())
+  }
+
 
   return (
     <div>
@@ -62,7 +66,7 @@ const App = () => {
               ? (<CountryDetails country={selectedCountry} />)
               : countries.length > 10
                 ? (<p>Too many matches, specify another filter</p>)
-                : (<CountryList countries={countries} />)
+                : (<CountryList countries={countries} handleCountryShow={handleCountryShow} />)
         }
       </div>
 
