@@ -17,10 +17,10 @@ const App = () => {
       countryService.getAllCountries().then((initialCountries) => {
         const filtered = initialCountries.filter(country => country.name.common.toLowerCase().includes(filter.toLowerCase()))
         setCountries(filtered)
-        setSelectedCountry(null)
         if (filtered.length === 1) {
           setCountry(filtered[0].name.common)
         } else {
+          setSelectedCountry(null) // Reset selected country when filter changes
           setCountry(null)
         }
       }).catch((error) => console.log(`Error fetching countries: ${error.message}`))
@@ -48,6 +48,8 @@ const App = () => {
 
   const handleCountryShow = (countryName) => {
     setFilter(countryName.toLowerCase())
+    setCountry(countryName)
+    setCountries([{ name: { common: countryName } }]) // Set countries to an array containing only the selected country
   }
 
 
@@ -61,10 +63,10 @@ const App = () => {
       <div>
         {
           countries.length === 0 || filter.length === 0
-            ? (<p>Specify a filter to find a match</p>)
+            ? (<p>No match, Specify a filter to find a match</p>)
             : countries.length === 1
               ? (<CountryDetails country={selectedCountry} />)
-              : countries.length > 10
+              : countries.length >= 10
                 ? (<p>Too many matches, specify another filter</p>)
                 : (<CountryList countries={countries} handleCountryShow={handleCountryShow} />)
         }
