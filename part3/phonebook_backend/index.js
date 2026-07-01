@@ -26,6 +26,7 @@ const persons = [
 
 app.use(express.json());
 
+// Get info route
 app.get("/info", (req, res) => {
 	const date = new Date().toString();
 	const entry = persons.length;
@@ -36,10 +37,12 @@ app.get("/info", (req, res) => {
 			</div>`);
 });
 
+//Get all persons route
 app.get("/api/persons", (req, res) => {
 	res.json(persons);
 });
 
+//Get a person route
 app.get("/api/persons/:id", (req, res) => {
 	const id = req.params.id
 	person = persons.find(person => (person.id === id))
@@ -49,6 +52,14 @@ app.get("/api/persons/:id", (req, res) => {
 	} else {
 		res.status(404).end()
 	}
+})
+
+//Delete a person route
+app.delete("/api/persons/:id", (req, res) => {
+	const id = req.params.id
+	const person = persons.filter(person => person.id !== id)
+
+	res.status(204).end()
 })
 
 const PORT = process.env.PORT || 3001;
