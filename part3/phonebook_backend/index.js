@@ -1,5 +1,5 @@
-const express = require("express")
-const app = express()
+const express = require("express");
+const app = express();
 
 const persons = [
 	{
@@ -21,16 +21,26 @@ const persons = [
 		id: "4",
 		name: "Mary Poppendieck",
 		number: "39-23-6423122",
-	}
+	},
 ];
 
-app.use(express.json())
+app.use(express.json());
 
-app.get('/api/persons', (req, res) => {
-    res.json(persons)
-})
+app.get("/info", (req, res) => {
+	const date = new Date().toString();
+	const entry = persons.length;
 
-const PORT = process.env.PORT || 3001
+	res.send(`<div>
+				<p>Phonebook has info for ${entry} people</p>
+				<p>${date}</p>
+			</div>`);
+});
+
+app.get("/api/persons", (req, res) => {
+	res.json(persons);
+});
+
+const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`)
-})
+	console.log(`Server is running on port ${PORT}`);
+});
