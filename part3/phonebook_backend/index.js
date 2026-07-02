@@ -66,26 +66,50 @@ app.delete("/api/persons/:id", (req, res) => {
 app.post("/api/persons", (req, res) => {
 	const body = req.body;
 
-	const personName = body.name
-	const personNumber = body.number
+	const personName = body.name;
+	const personNumber = body.number;
 
+	// Check if name already exit
+	const isNameFound = (name) => {
+		const nameFound = persons.find((person) => person.name === name)
+			? true
+			: false;
+		return nameFound;
+	};
 
+	if (!personName) {
+		return res.status(400).json({
+			error: "name is missing",
+		});
+	}
+
+	if (!personNumber) {
+		return res.status(400).json({
+			error: "number is missing",
+		});
+	}
+
+	if (isNameFound(personName)) {
+		return res.status(400).json({
+			error: "name must be unique",
+		});
+	}
 
 	const generateId = () => {
 		const id = Math.floor(Math.random() * 1000000000);
 
-		return String(id)
-	}
+		return String(id);
+	};
 
 	const person = {
 		id: generateId(),
 		name: personName,
 		number: personNumber,
-	}
+	};
 
-	persons = persons.concat(person)
+	persons = persons.concat(person);
 
-	res.json(person)
+	res.json(person);
 })
 
 const PORT = process.env.PORT || 3001;
