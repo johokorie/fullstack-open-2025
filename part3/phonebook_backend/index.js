@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 
-const persons = [
+let persons = [
 	{
 		id: "1",
 		name: "Arto Hellas",
@@ -60,6 +60,32 @@ app.delete("/api/persons/:id", (req, res) => {
 	const person = persons.filter(person => person.id !== id)
 
 	res.status(204).end()
+})
+
+//Post  person route
+app.post("/api/persons", (req, res) => {
+	const body = req.body;
+
+	const personName = body.name
+	const personNumber = body.number
+
+
+
+	const generateId = () => {
+		const id = Math.floor(Math.random() * 1000000000);
+
+		return String(id)
+	}
+
+	const person = {
+		id: generateId(),
+		name: personName,
+		number: personNumber,
+	}
+
+	persons = persons.concat(person)
+
+	res.json(person)
 })
 
 const PORT = process.env.PORT || 3001;
