@@ -1,6 +1,5 @@
 const express = require("express");
-const morgan = require("morgan")
-
+const morgan = require("morgan");
 
 const app = express();
 
@@ -27,8 +26,14 @@ let persons = [
 	},
 ];
 
+morgan.token("body", (req, res) => {
+	return JSON.stringify(req.body);
+});
+
 app.use(express.json());
-app.use(morgan("tiny"));
+app.use(
+	morgan(":method :url :status :res[content-length] - :response-time ms :body"),
+);
 
 // Get info route
 app.get("/info", (req, res) => {
@@ -48,23 +53,23 @@ app.get("/api/persons", (req, res) => {
 
 //Get a person route
 app.get("/api/persons/:id", (req, res) => {
-	const id = req.params.id
-	person = persons.find(person => (person.id === id))
+	const id = req.params.id;
+	person = persons.find((person) => person.id === id);
 
 	if (person) {
-		res.json(person)
+		res.json(person);
 	} else {
-		res.status(404).end()
+		res.status(404).end();
 	}
-})
+});
 
 //Delete a person route
 app.delete("/api/persons/:id", (req, res) => {
-	const id = req.params.id
-	const person = persons.filter(person => person.id !== id)
+	const id = req.params.id;
+	const person = persons.filter((person) => person.id !== id);
 
-	res.status(204).end()
-})
+	res.status(204).end();
+});
 
 //Post  person route
 app.post("/api/persons", (req, res) => {
@@ -114,14 +119,13 @@ app.post("/api/persons", (req, res) => {
 	persons = persons.concat(person);
 
 	res.json(person);
-})
-
+});
 
 const unknownEndpoint = (req, res) => {
-	res.status(404).send({ error: "unknown endpoint"})
-}
+	res.status(404).send({ error: "unknown endpoint" });
+};
 
-app.use(unknownEndpoint)
+app.use(unknownEndpoint);
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
