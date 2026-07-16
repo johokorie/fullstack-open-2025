@@ -1,58 +1,43 @@
+require("dotenv").config();
 const express = require("express");
+const Person = require("./models/person");
 const morgan = require("morgan");
 const cors = require("cors");
 
 const app = express();
 
-app.use(cors());
-app.use(express.static("dist"));
-
-let persons = [
-	{
-		id: "1",
-		name: "Arto Hellas",
-		number: "040-123456",
-	},
-	{
-		id: "2",
-		name: "Ada Lovelace",
-		number: "39-44-5323523",
-	},
-	{
-		id: "3",
-		name: "Dan Abramov",
-		number: "12-43-234345",
-	},
-	{
-		id: "4",
-		name: "Mary Poppendieck",
-		number: "39-23-6423122",
-	},
-];
-
 morgan.token("body", (req, res) => {
 	return JSON.stringify(req.body);
 });
 
+
+
+app.use(cors());
+app.use(express.static("dist"));
 app.use(express.json());
-app.use(
-morgan(":method :url :status :res[content-length] - :response-time ms :body"),
-);
+app.use(morgan(":method :url :status :res[content-length] - :response-time ms :body"),);
+
 
 // Get info route
 app.get("/info", (req, res) => {
-	const date = new Date().toString();
-	const entry = persons.length;
 
-	res.send(`<div>
-				<p>Phonebook has info for ${entry} people</p>
+	Person.find({}).then((persons) => {
+
+		const date = new Date().toString();
+
+		res.send(`<div>
+				<p>Phonebook has info for ${persons.length} people</p>
 				<p>${date}</p>
 			</div>`);
+	})
 });
 
 //Get all persons route
 app.get("/api/persons", (req, res) => {
-	res.json(persons);
+
+	Person.find({}).then((persons) => {
+		res.json(persons)
+	})
 });
 
 //Get a person route
