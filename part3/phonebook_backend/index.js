@@ -6,6 +6,8 @@ const cors = require("cors");
 
 const app = express();
 
+const persons = []
+
 morgan.token("body", (req, res) => {
 	return JSON.stringify(req.body);
 });
